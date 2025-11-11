@@ -1,0 +1,273 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.auth-hero {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(to right, #0D3B66 50%, #F5F5F5 50%);
+}
+
+.auth-hero-left {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  color: white;
+}
+
+.auth-hero-left h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 0.5rem;
+}
+
+.auth-hero-left h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #A0C4FF;
+  margin-bottom: 1rem;
+}
+
+.auth-hero-left p {
+  font-size: 1.2rem;
+  color: #DADADA;
+}
+
+.auth-hero-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.auth-card {
+  max-width: 320px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  transition: transform 0.3s;
+  background-color: white;
+}
+
+.auth-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Desactiva el efecto hover cuando se use la clase no-hover */
+.no-hover:hover {
+  transform: none !important;
+}
+
+.p-inputtext, .p-password input {
+  border-radius: 8px;
+  border: 1px solid #B0B0B0;
+  padding: 0.8rem;
+  transition: border 0.3s;
+}
+
+.p-inputtext:focus, .p-password input:focus {
+  border: 2px solid #FF6B35;
+  outline: none;
+}
+
+.p-button {
+  border-radius: 50px;
+  font-weight: bold;
+  padding: 0.8rem 1.5rem;
+  transition: background 0.3s;
+}
+
+.p-button-primary {
+  background: #FF6B35;
+  border: none;
+  color: white;
+}
+
+.p-button-primary:hover {
+  background: #FFC300;
+  color: #0D3B66;
+}
+
+.p-button-text {
+  color: #007AD9;
+}
+
+.p-toast-message-success {
+  background-color: #27AE60 !important;
+  color: white !important;
+}
+
+.p-toast-message-error {
+  background-color: #E74C3C !important;
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  .auth-hero {
+    flex-direction: column;
+    background: #0D3B66;
+  }
+
+  .auth-hero-left, .auth-hero-right {
+    flex: none;
+    width: 100%;
+    height: 50vh;
+  }
+
+  .auth-hero-left h1 {
+    font-size: 2.5rem;
+  }
+
+  .auth-hero-left h2 {
+    font-size: 1.5rem;
+  }
+
+  .auth-hero-left p {
+    font-size: 1rem;
+  }
+}
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f4f4f4;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.navbar h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0D3B66;
+}
+
+.navbar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar-buttons i.pi-home {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #3f51b5;
+}
+.p-button-outlined {
+  border-color: #fff;
+  color: #fff;
+}
+
+.p-button-outlined:hover {
+  background-color: rgba(255,255,255,0.1);
+  border-color: #fff;
+}
+
+.p-button-danger {
+  background-color: #e53935;
+  border: none;
+  color: #fff;
+}
+
+/* Responsive para listas y home */
+@media (max-width: 768px) {
+  .user-list-container,
+  .client-list-container {
+    padding: 1rem !important;
+  }
+
+  .user-list-container .p-card,
+  .client-list-container .p-card {
+    padding: 1rem !important;
+  }
+
+  .user-list-container h1,
+  .client-list-container h1 {
+    font-size: 1.5rem !important;
+  }
+
+  .user-list-container .p-datatable,
+  .client-list-container .p-datatable {
+    font-size: 0.875rem;
+  }
+
+  .home-container {
+    padding: 1rem !important;
+  }
+
+  .home-container .p-card {
+    padding: 1.5rem !important;
+  }
+
+  .home-container h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .home-container h3 {
+    font-size: 1.25rem !important;
+  }
+
+  .home-container .p-button {
+    font-size: 0.875rem;
+    padding: 0.6rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-list-container,
+  .client-list-container {
+    padding: 0.5rem !important;
+  }
+
+  .user-list-container .p-card,
+  .client-list-container .p-card {
+    padding: 0.75rem !important;
+  }
+
+  .user-list-container h1,
+  .client-list-container h1 {
+    font-size: 1.25rem !important;
+  }
+
+  .user-list-container p,
+  .client-list-container p {
+    font-size: 0.875rem !important;
+  }
+
+  .home-container {
+    padding: 0.5rem !important;
+  }
+
+  .home-container .p-card {
+    padding: 1rem !important;
+  }
+
+  .home-container h2 {
+    font-size: 1.25rem !important;
+  }
+
+  .home-container h3 {
+    font-size: 1rem !important;
+  }
+
+  .home-container .p-button {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+  }
+}

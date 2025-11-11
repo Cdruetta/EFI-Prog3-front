@@ -1,0 +1,111 @@
+.client-register-auth-hero {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(to right, #0D3B66 50%, #F5F5F5 50%);
+}
+
+.client-register-auth-hero-left {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    color: white;
+}
+
+.client-register-auth-hero-left h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 0.5rem;
+}
+
+.client-register-auth-hero-left h2 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #A0C4FF;
+    margin-bottom: 1rem;
+}
+
+.client-register-auth-hero-left p {
+    font-size: 1.2rem;
+    color: #DADADA;
+}
+
+.client-register-auth-hero-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.client-register-auth-card {
+    max-width: 320px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    background-color: white;
+}
+
+.client-register-no-hover:hover {
+    transform: none !important;
+}
+
+.client-register-input-text {
+    border-radius: 8px;
+    border: 1px solid #B0B0B0;
+    padding: 0.8rem;
+    transition: border 0.3s;
+}
+
+.client-register-input-text:focus {
+    border: 2px solid #FF6B35;
+    outline: none;
+}
+
+.client-register-password input {
+    border-radius: 8px;
+    border: 1px solid #B0B0B0;
+    padding: 0.8rem;
+    transition: border 0.3s;
+}
+
+.client-register-password input:focus {
+    border: 2px solid #FF6B35;
+    outline: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .client-register-auth-hero {
+        flex-direction: column;
+        background: #0D3B66;
+    }
+
+    .client-register-auth-hero-left,
+    .client-register-auth-hero-right {
+        flex: none;
+        width: 100%;
+        height: 50vh;
+    }
+
+    .client-register-auth-hero-left h1 {
+        font-size: 2.5rem;
+    }
+
+    .client-register-auth-hero-left h2 {
+        font-size: 1.5rem;
+    }
+
+    .client-register-auth-hero-left p {
+        font-size: 1rem;
+    }
+}
+

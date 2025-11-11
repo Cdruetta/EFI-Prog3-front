@@ -1,0 +1,153 @@
+.about-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    max-height: 100vh;
+    padding: 1rem;
+    background-color: #0D3B66;
+    overflow: hidden;
+}
+
+.about-card {
+    max-width: 920px;
+    width: 100%;
+    max-height: calc(100vh - 2rem);
+    overflow: auto;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    background-color: white;
+}
+
+.about-title {
+    margin: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.about-description {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #5f6368;
+    font-size: 0.9rem;
+}
+
+.about-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.about-feature-card {
+    box-shadow: none;
+    padding: 0.5rem;
+}
+
+.about-feature-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-direction: row;
+    text-align: left;
+}
+
+.about-feature-icon {
+    font-size: 20px;
+    color: #FF6B35;
+}
+
+.about-feature-title {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.about-feature-text {
+    margin: 0;
+    color: #5f6368;
+    font-size: 0.85rem;
+}
+
+.about-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.about-stat-item {
+    text-align: center;
+}
+
+.about-stat-number {
+    margin: 0;
+    color: #0D3B66;
+    font-size: 1.5rem;
+}
+
+.about-stat-label {
+    color: #5f6368;
+    font-size: 0.85rem;
+}
+
+.about-buttons-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.about-button-back {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1023px) {
+    .about-card {
+        max-width: 90%;
+    }
+    
+    .about-features-grid,
+    .about-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 767px) {
+    .about-container {
+        padding: 0.5rem;
+    }
+    
+    .about-card {
+        max-width: 100%;
+        padding: 0.75rem;
+    }
+    
+    .about-title {
+        font-size: 1.2rem;
+    }
+    
+    .about-description {
+        font-size: 0.85rem;
+    }
+    
+    .about-features-grid,
+    .about-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .about-feature-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .about-stat-number {
+        font-size: 1.2rem;
+    }
+}
+

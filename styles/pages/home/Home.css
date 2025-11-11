@@ -1,0 +1,114 @@
+.home-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 70px);
+    padding: 1rem;
+    background-color: #0D3B66;
+    position: relative;
+    overflow: hidden;
+}
+
+.home-auth-card {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    background-color: white;
+    text-align: center;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+.home-no-hover:hover {
+    transform: none !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .home-container {
+        padding: 1rem;
+    }
+
+    .home-auth-card {
+        padding: 1.5rem;
+    }
+
+    .home-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .home-container h3 {
+        font-size: 1.25rem;
+    }
+
+    .home-container .p-button {
+        font-size: 0.875rem;
+        padding: 0.6rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-container {
+        padding: 0.5rem;
+    }
+
+    .home-auth-card {
+        padding: 1rem;
+    }
+
+    .home-container h2 {
+        font-size: 1.25rem;
+    }
+
+    .home-container h3 {
+        font-size: 1rem;
+    }
+
+    .home-container .p-button {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+        width: 100%;
+    }
+}
+
+.info-card {
+    width: 300px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.info-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+}
+
+.info-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 16px 16px 0 0;
+    transition: transform 0.3s ease;
+}
+
+.info-card:hover img {
+    transform: scale(1.05);
+}
+
+.info-card .p-card-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.info-card .p-card-subtitle {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}

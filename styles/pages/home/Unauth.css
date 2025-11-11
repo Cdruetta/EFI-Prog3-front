@@ -1,0 +1,24 @@
+.unauth-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 16px;
+    background-color: #0D3B66;
+}
+
+.unauth-card {
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    background-color: white;
+    text-align: center;
+}
+
+.unauth-no-hover:hover {
+    transform: none !important;
+}
+

@@ -1,0 +1,71 @@
+.vehicle-list-container {
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: #0D3B66;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.vehicle-list-card {
+    width: 100%;
+    max-width: 1200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-list-header {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.vehicle-list-title {
+    margin: 0;
+    color: #1F2937;
+    font-size: 1.875rem;
+    font-weight: 600;
+}
+
+.vehicle-list-subtitle {
+    margin: 0.5rem 0 0 0;
+    color: #6B7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .vehicle-list-container {
+        padding: 1rem;
+    }
+
+    .vehicle-list-card {
+        padding: 1rem;
+    }
+
+    .vehicle-list-title {
+        font-size: 1.5rem;
+    }
+
+    .vehicle-list-container .p-datatable {
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .vehicle-list-container {
+        padding: 0.5rem;
+    }
+
+    .vehicle-list-card {
+        padding: 0.75rem;
+    }
+
+    .vehicle-list-title {
+        font-size: 1.25rem;
+    }
+
+    .vehicle-list-subtitle {
+        font-size: 0.875rem;
+    }
+}
+
