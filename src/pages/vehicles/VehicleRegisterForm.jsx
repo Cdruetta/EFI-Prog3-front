@@ -60,17 +60,43 @@ export default function VehicleRegisterForm() {
       try {
         const res = await brandsService.list();
         if (res.status === 200) {
-          const brandsData = res?.data?.data ?? [];
-          setBrands(Array.isArray(brandsData) ? brandsData : []);
+          const brandsData = res?.data?.data ?? res?.data ?? [];
+          const brandsArray = Array.isArray(brandsData) ? brandsData : [];
+          setBrands(brandsArray);
+          
+          // Si no hay marcas, mostrar un mensaje
+          if (brandsArray.length === 0) {
+            showToast({
+              severity: "warn",
+              summary: "Advertencia",
+              detail: "No se encontraron marcas disponibles. Por favor, registre una marca primero.",
+              life: 5000
+            });
+          }
+        } else {
+          setBrands([]);
+          showToast({
+            severity: "error",
+            summary: "Error",
+            detail: "No se pudieron cargar las marcas",
+            life: 5000
+          });
         }
       } catch (err) {
         setBrands([]);
+        const errorMsg = err?.data?.message || err?.message || "Error al cargar las marcas";
+        showToast({
+          severity: "error",
+          summary: "Error",
+          detail: errorMsg,
+          life: 5000
+        });
       } finally {
         setLoadingBrands(false);
       }
     };
     loadBrands();
-  }, []);
+  }, [showToast]);
 
   const loadVehicleData = useCallback(async () => {
     if (!isEdit || !id) return;
@@ -83,10 +109,13 @@ export default function VehicleRegisterForm() {
       vehicleData = data;
     }
     
-    // El backend usa marcaId (camelCase) y precio_dia
-    let marcaId = vehicleData.marcaId || vehicleData.marca_id;
+    // El backend puede usar brandId, marcaId o marca_id
+    let marcaId = vehicleData.brandId || vehicleData.marcaId || vehicleData.marca_id || vehicleData.brand_id;
     if (!marcaId && vehicleData.marca && typeof vehicleData.marca === 'object') {
-      marcaId = vehicleData.marca.id || vehicleData.marca.marcaId;
+      marcaId = vehicleData.marca.id || vehicleData.marca.marcaId || vehicleData.marca.brandId;
+    }
+    if (!marcaId && vehicleData.Brand && typeof vehicleData.Brand === 'object') {
+      marcaId = vehicleData.Brand.id || vehicleData.Brand.marcaId || vehicleData.Brand.brandId;
     }
     
     setInitialValues({
@@ -104,14 +133,121 @@ export default function VehicleRegisterForm() {
   }, [loadVehicleData]);
 
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+    // Validar que la marca esté seleccionada
+    if (!values.marca || values.marca === null) {
+      setFieldError("marca", "Debe seleccionar una marca");
+      setSubmitting(false);
+      showToast({ 
+        severity: "error", 
+        summary: "Error de validación", 
+        detail: "Debe seleccionar una marca", 
+        life: 5000 
+      });
+      return;
+    }
+
+    // Convertir el ID de marca a número si es necesario
+    const marcaId = Number(values.marca);
+    if (isNaN(marcaId)) {
+      setFieldError("marca", "El ID de marca no es válido");
+      setSubmitting(false);
+      showToast({ 
+        severity: "error", 
+        summary: "Error de validación", 
+        detail: "El ID de marca no es válido", 
+        life: 5000 
+      });
+      return;
+    }
+
+    // Verificar que la marca existe en la lista de marcas disponibles
+    const marcaExiste = brands.some(brand => {
+      const brandId = brand.id || brand.marcaId || brand.marca_id;
+      return Number(brandId) === marcaId;
+    });
+
+    if (!marcaExiste) {
+      setFieldError("marca", "La marca seleccionada no es válida");
+      setSubmitting(false);
+      showToast({ 
+        severity: "error", 
+        summary: "Error de validación", 
+        detail: "La marca seleccionada no existe en el sistema. Por favor, seleccione una marca válida.", 
+        life: 5000 
+      });
+      return;
+    }
+
+    // Verificar que la marca existe en el backend antes de crear el vehículo
+    try {
+      console.log("Verificando marca en backend con ID:", marcaId);
+      const brandCheck = await brandsService.get(marcaId);
+      console.log("Respuesta del backend al verificar marca:", brandCheck);
+      
+      if (brandCheck.status !== 200 || !brandCheck.data?.data) {
+        setFieldError("marca", "La marca no existe en el sistema");
+        setSubmitting(false);
+        showToast({ 
+          severity: "error", 
+          summary: "Error de validación", 
+          detail: `La marca con ID ${marcaId} no existe en el backend. Por favor, seleccione una marca válida.`, 
+          life: 5000 
+        });
+        return;
+      }
+      
+      const marcaBackend = brandCheck.data?.data || brandCheck.data;
+      console.log("Marca encontrada en backend:", marcaBackend);
+      
+      // Verificar si la marca está activa
+      if (marcaBackend.is_active === false) {
+        setFieldError("marca", "La marca seleccionada no está activa");
+        setSubmitting(false);
+        showToast({ 
+          severity: "error", 
+          summary: "Error de validación", 
+          detail: "La marca seleccionada no está activa. Por favor, seleccione una marca activa.", 
+          life: 5000 
+        });
+        return;
+      }
+    } catch (err) {
+      console.error("Error al verificar marca en backend:", err);
+      setFieldError("marca", "Error al verificar la marca");
+      setSubmitting(false);
+      showToast({ 
+        severity: "error", 
+        summary: "Error", 
+        detail: `Error al verificar la marca: ${err?.data?.message || err?.message || "Error desconocido"}`, 
+        life: 5000 
+      });
+      return;
+    }
+
+    // Obtener información de la marca seleccionada para debug
+    const marcaSeleccionada = brands.find(brand => {
+      const brandId = brand.id || brand.marcaId || brand.marca_id;
+      return Number(brandId) === marcaId;
+    });
+
+    // Intentar diferentes formatos según lo que el backend pueda esperar
+    // Primero intentamos con brandId (camelCase, nombre del modelo en inglés)
     const payload = {
-      marcaId: values.marca, // Enviar el ID de la marca (camelCase como espera Sequelize)
+      brandId: marcaId,
       modelo: values.modelo.trim(),
       ...(values.anio && { anio: values.anio }),
-      ...(values.precio_diario !== null && { precio_dia: values.precio_diario }), // precio_dia según el modelo
+      ...(values.precio_diario !== null && { precio_dia: values.precio_diario }),
       disponible: values.disponible !== undefined ? values.disponible : true,
       is_active: values.is_active !== undefined ? values.is_active : true
     };
+
+    // Log para debug (puedes removerlo después)
+    console.log("=== DEBUG CREAR VEHÍCULO ===");
+    console.log("Payload enviado:", JSON.stringify(payload, null, 2));
+    console.log("Marca ID:", marcaId, typeof marcaId);
+    console.log("Marca seleccionada:", marcaSeleccionada);
+    console.log("Marcas disponibles:", brands);
+    console.log("===========================");
 
     let result;
     if (isEdit) {
@@ -120,7 +256,57 @@ export default function VehicleRegisterForm() {
       result = await createCar(payload);
     }
 
-    const { ok, message } = result;
+    let { ok, message } = result;
+    console.log("Resultado primer intento (brandId):", { ok, message, fullResult: result });
+    
+    // Si falla con brandId, intentar con marcaId
+    if (!ok && message?.toLowerCase().includes("marca")) {
+      console.log("Intento fallido con brandId, intentando con marcaId");
+      const payloadAlt = {
+        marcaId: marcaId,
+        modelo: values.modelo.trim(),
+        ...(values.anio && { anio: values.anio }),
+        ...(values.precio_diario !== null && { precio_dia: values.precio_diario }),
+        disponible: values.disponible !== undefined ? values.disponible : true,
+        is_active: values.is_active !== undefined ? values.is_active : true
+      };
+      
+      console.log("Payload alternativo (marcaId):", JSON.stringify(payloadAlt, null, 2));
+      
+      if (isEdit) {
+        result = await updateCar(Number(id), payloadAlt);
+      } else {
+        result = await createCar(payloadAlt);
+      }
+      console.log("Resultado segundo intento (marcaId):", { ok: result.ok, message: result.message, fullResult: result });
+      ok = result.ok;
+      message = result.message;
+      
+      // Si aún falla, intentar con marca_id
+      if (!ok && message?.toLowerCase().includes("marca")) {
+        console.log("Intento fallido con marcaId, intentando con marca_id");
+        const payloadAlt2 = {
+          marca_id: marcaId,
+          modelo: values.modelo.trim(),
+          ...(values.anio && { anio: values.anio }),
+          ...(values.precio_diario !== null && { precio_dia: values.precio_diario }),
+          disponible: values.disponible !== undefined ? values.disponible : true,
+          is_active: values.is_active !== undefined ? values.is_active : true
+        };
+        
+        console.log("Payload alternativo (marca_id):", JSON.stringify(payloadAlt2, null, 2));
+        
+        if (isEdit) {
+          result = await updateCar(Number(id), payloadAlt2);
+        } else {
+          result = await createCar(payloadAlt2);
+        }
+        console.log("Resultado tercer intento (marca_id):", { ok: result.ok, message: result.message, fullResult: result });
+        ok = result.ok;
+        message = result.message;
+      }
+    }
+    
     if (ok) {
       showToast({ 
         severity: "success", 
@@ -178,15 +364,18 @@ export default function VehicleRegisterForm() {
                       {({ field, form }) => {
                         const brandOptions = brands.map(brand => ({
                           label: brand.nombre || brand.name || brand.marca || `Marca ${brand.id}`,
-                          value: brand.id
+                          value: Number(brand.id) // Asegurar que el valor sea un número
                         }));
                         
                         return (
                           <Dropdown
                             id="marca"
-                            value={field.value}
+                            value={field.value !== null && field.value !== undefined ? Number(field.value) : null}
                             options={brandOptions}
-                            onChange={(e) => form.setFieldValue("marca", e.value)}
+                            onChange={(e) => {
+                              const value = e.value !== null && e.value !== undefined ? Number(e.value) : null;
+                              form.setFieldValue("marca", value);
+                            }}
                             placeholder={loadingBrands ? "Cargando marcas..." : "Seleccione una marca"}
                             className={touched.marca && errors.marca ? "p-invalid" : ""}
                             disabled={loadingBrands}

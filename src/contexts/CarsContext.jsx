@@ -93,8 +93,25 @@ export const CarsProvider = ({ children }) => {
             }
             return { ok, message: msg, data: res?.data?.data };
         } catch (err) {
-            const msg = err?.data?.message || err?.data?.detail || err?.message || "Error al crear vehículo.";
-            return { ok: false, message: msg };
+            // Mejor manejo de errores para capturar más detalles
+            console.error("Error completo al crear vehículo:", {
+                status: err?.status,
+                data: err?.data,
+                message: err?.message,
+                response: err?.response
+            });
+            
+            // Intentar obtener el mensaje de error de diferentes lugares
+            const msg = err?.data?.message || 
+                       err?.data?.detail || 
+                       err?.data?.error ||
+                       err?.response?.data?.message ||
+                       err?.response?.data?.detail ||
+                       err?.response?.data?.error ||
+                       err?.message || 
+                       `Error al crear vehículo${err?.status ? ` (${err.status})` : ''}.`;
+            
+            return { ok: false, message: msg, status: err?.status, errorData: err?.data };
         }
     };
 

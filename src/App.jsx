@@ -15,6 +15,7 @@ import HomeRoutes from "./pages/home";
 import ClientRoutes from "./pages/client";
 import VehicleRoutes from "./pages/vehicles";
 import RentalRoutes from "./pages/rental";
+import BrandRoutes from "./pages/brands";
 
 function App() {
     return (
@@ -70,6 +71,15 @@ function App() {
                                     </RentalsProvider>
                                 </CarsProvider>
                             </ClientProvider>
+                        </Layout>
+                    }
+                />
+                {/* Rutas de marcas */}
+                <Route
+                    path="/brands/*"
+                    element={
+                        <Layout>
+                            <BrandRoutes />
                         </Layout>
                     }
                 />

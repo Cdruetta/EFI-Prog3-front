@@ -40,11 +40,11 @@ export default function Home() {
 
     const backgroundStyle = {
         display: "flex",
-        alignItems: "center",
+        alignItems: "flex-start",
         justifyContent: "center",
         flexDirection: "column",
         minHeight: "calc(100vh - 70px)",
-        padding: "2rem 1rem",
+        padding: "5rem 1rem 2rem 1rem",
         backgroundColor: "#0D3B66",
         backgroundImage: "url('https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1920&q=80')",
         backgroundSize: "cover",
@@ -123,6 +123,10 @@ export default function Home() {
 
                     <div style={{ marginTop: "1rem", display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap" }}>
                         <Button label="Ver Flota" icon="pi pi-car" className="p-button-secondary p-button-sm" onClick={() => navigate('/vehicles')} />
+                        <Button label="Ver Marcas" icon="pi pi-tag" className="p-button-secondary p-button-sm" onClick={() => navigate('/brands/list')} />
+                        {user?.rol === "admin" && (
+                            <Button label="Registrar Marca" icon="pi pi-plus" className="p-button-secondary p-button-sm" onClick={() => navigate('/brands/register')} />
+                        )}
                         <Button label="Alquilar" icon="pi pi-calendar-plus" className="p-button-secondary p-button-sm" onClick={() => navigate('/rental/create')} />
                         <Button label="Cerrar sesión" icon="pi pi-sign-out" className="p-button-danger p-button-sm" onClick={() => signOut()} />
                     </div>

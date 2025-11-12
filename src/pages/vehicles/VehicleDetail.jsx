@@ -36,8 +36,9 @@ export default function VehicleDetail() {
                 }
                 if (isMounted) setVehicle(data);
 
-                let marcaId = data.marcaId || data.marca_id;
-                if (!marcaId && data.marca && typeof data.marca === "object") marcaId = data.marca.id || data.marca.marcaId;
+                let marcaId = data.brandId || data.marcaId || data.marca_id || data.brand_id;
+                if (!marcaId && data.marca && typeof data.marca === "object") marcaId = data.marca.id || data.marca.marcaId || data.marca.brandId;
+                if (!marcaId && data.Brand && typeof data.Brand === "object") marcaId = data.Brand.id || data.Brand.marcaId || data.Brand.brandId;
 
                 if (marcaId) {
                     if (data.marca && typeof data.marca === "object") setBrandName(data.marca.nombre || data.marca.name || data.marca.marca || "");
